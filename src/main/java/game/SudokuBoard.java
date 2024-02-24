@@ -62,9 +62,9 @@ public class SudokuBoard {
         }
 
         if (currentValue != CellValue.EMPTY) {
-            rowValidValuesMap.get(row).add(newCellValue);
-            colValidValuesMap.get(col).add(newCellValue);
-            quadrantValidValuesMap.get(quadrant).add(newCellValue);
+            rowValidValuesMap.get(row).add(currentValue);
+            colValidValuesMap.get(col).add(currentValue);
+            quadrantValidValuesMap.get(quadrant).add(currentValue);
         }
         return true;
     }

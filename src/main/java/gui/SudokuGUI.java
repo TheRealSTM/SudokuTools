@@ -53,6 +53,12 @@ public class SudokuGUI extends JFrame {
         ActionListener menuActionListener = e -> {
             if (board.addValue(row, col, CellValue.convertValue(e.getActionCommand()), true)) {
                 cell.setText(e.getActionCommand());
+                if (board.hasWinConditionBeenMet()) {
+                    JOptionPane.showMessageDialog(SudokuGUI.this,
+                            "You have solved the puzzle.",
+                            "Game Won!",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
             } else {
                 System.out.println("Invalid move suggested.");
                 JOptionPane.showMessageDialog(SudokuGUI.this,
