@@ -44,7 +44,6 @@ public class SudokuGUI extends JFrame {
                 add(cell);
             }
         }
-
     }
 
     private JPopupMenu createNumberSelectionPopup(JTextField cell, int row, int col) {
@@ -56,6 +55,10 @@ public class SudokuGUI extends JFrame {
                 cell.setText(e.getActionCommand());
             } else {
                 System.out.println("Invalid move suggested.");
+                JOptionPane.showMessageDialog(SudokuGUI.this,
+                        "You cannot make a move here.",
+                        "Invalid Move",
+                        JOptionPane.ERROR_MESSAGE);
             }
         };
 

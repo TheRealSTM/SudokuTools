@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 @Data
@@ -47,12 +48,18 @@ public class SudokuBoard {
         if (!overWrite && grid[row][col] != CellValue.EMPTY) {
             return false;
         }
-        int quadrant = BoardCalculationUtil.getQuadrant(row, col);
         CellValue currentValue = grid[row][col];
+        if (newCellValue == currentValue) {
+            return false;
+        }
+        int quadrant = BoardCalculationUtil.getQuadrant(row, col);
+
         grid[row][col] = newCellValue;
-        rowValidValuesMap.get(row).remove(newCellValue);
-        colValidValuesMap.get(col).remove(newCellValue);
-        quadrantValidValuesMap.get(quadrant).remove(newCellValue);
+        if (newCellValue != CellValue.EMPTY) {
+            rowValidValuesMap.get(row).remove(newCellValue);
+            colValidValuesMap.get(col).remove(newCellValue);
+            quadrantValidValuesMap.get(quadrant).remove(newCellValue);
+        }
 
         if (currentValue != CellValue.EMPTY) {
             rowValidValuesMap.get(row).add(newCellValue);
@@ -68,6 +75,9 @@ public class SudokuBoard {
         }
         if (!BoardCalculationUtil.isValidPosition(col)) {
             return false;
+        }
+        if (newCellValue == CellValue.EMPTY) {
+            return true;
         }
         if (!rowValidValuesMap.get(row).contains(newCellValue)) {
             return false;
@@ -87,6 +97,16 @@ public class SudokuBoard {
             throw new IllegalArgumentException("Invalid row, col (" + row + ", " + col + ") provided.");
         }
         return grid[row][col];
+    }
+
+    public boolean hasWinConditionBeenMet() {
+        return hasNoValidMovesRemaining(rowValidValuesMap) &&
+                hasNoValidMovesRemaining(colValidValuesMap) &&
+                hasNoValidMovesRemaining(quadrantValidValuesMap);
+    }
+
+    private boolean hasNoValidMovesRemaining(Map<Integer, Set<CellValue>> groupValidValuesMap) {
+        return groupValidValuesMap.values().stream().allMatch(Set::isEmpty);
     }
 
     public Set<CellValue> getMissingValuesForRow(int row) {
@@ -114,5 +134,20 @@ public class SudokuBoard {
             System.out.println("|");
         }
         System.out.println(" -----------------------");
+    }
+
+    public void createPuzzleWithRandomRemoval(int numberOfSquaresToRemove) {
+        Random random = new Random();
+        int numbersToRemove = numberOfSquaresToRemove;
+        while (numbersToRemove > 0) {
+            System.out.println("Move to remove: " + numbersToRemove);
+            int potentialRow = random.nextInt(BoardConstants.UNIT_SIZE);
+            int potentialCol = random.nextInt(BoardConstants.UNIT_SIZE);
+            if (addValue(potentialRow, potentialCol, CellValue.EMPTY, true)) {
+                numbersToRemove--;
+            } else {
+                System.out.println("I was unable to remove the move (" + potentialRow + ", " + potentialCol + ")");
+            }
+        }
     }
 }

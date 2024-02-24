@@ -18,6 +18,7 @@ public class Main {
                 System.out.println("Board creator was unable to create board. Time to try again. " + (attempts++) + " attempt failed.");
             }
         }
+        board.createPuzzleWithRandomRemoval(5);
         SudokuBoard finalBoard = board;
         SwingUtilities.invokeLater(() -> {
             SudokuGUI frame = new SudokuGUI(finalBoard);
