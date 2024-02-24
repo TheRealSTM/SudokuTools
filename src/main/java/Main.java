@@ -1,4 +1,8 @@
+import game.BoardCreator;
+import game.SudokuBoard;
+import gui.SudokuGUI;
 
+import javax.swing.*;
 
 public class Main {
 
@@ -11,10 +15,13 @@ public class Main {
             try {
                 board = boardCreator.createCompleteBoard();
             } catch (Exception e) {
-
                 System.out.println("Board creator was unable to create board. Time to try again. " + (attempts++) + " attempt failed.");
             }
         }
-        board.printBoard();
+        SudokuBoard finalBoard = board;
+        SwingUtilities.invokeLater(() -> {
+            SudokuGUI frame = new SudokuGUI(finalBoard);
+            frame.setVisible(true);
+        });
     }
 }

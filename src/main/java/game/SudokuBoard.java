@@ -1,3 +1,5 @@
+package game;
+
 import constant.BoardCalculationUtil;
 import constant.BoardConstants;
 import constant.CellValue;
@@ -78,6 +80,13 @@ public class SudokuBoard {
             return false;
         }
         return true;
+    }
+
+    public CellValue getPositionValue(int row, int col) {
+        if (!(BoardCalculationUtil.isValidPosition(row) || BoardCalculationUtil.isValidPosition(col))) {
+            throw new IllegalArgumentException("Invalid row, col (" + row + ", " + col + ") provided.");
+        }
+        return grid[row][col];
     }
 
     public Set<CellValue> getMissingValuesForRow(int row) {
